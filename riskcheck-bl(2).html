@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RiskCheck Belajar LinkedIn | Sistem Deteksi Risiko Dini</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FFFFFF;
+    --bg-soft:#F5F7FA;
+    --ink:#1A1A1A;
+    --muted:#5C6670;
+    --primary:#0A66C2;
+    --primary-dark:#004182;
+    --green:#2ECC71;
+    --yellow:#E0A800;
+    --red:#E74C3C;
+    --border:#E6EAF0;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Inter',Arial,Helvetica,sans-serif;
+    color:var(--ink);
+    background:var(--bg);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px;}
+
+  /* NAV */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:rgba(255,255,255,0.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--border);
+  }
+  nav{
+    display:flex;align-items:center;justify-content:space-between;
+    max-width:1080px;margin:0 auto;padding:16px 28px;
+  }
+  .logo{
+    display:flex;align-items:center;gap:10px;
+    font-weight:800;font-size:17px;letter-spacing:-0.01em;color:var(--ink);
+    text-decoration:none;
+  }
+  .logo img{width:30px;height:30px;border-radius:7px;display:block;}
+  .nav-links{display:flex;align-items:center;gap:32px;}
+  .nav-links a{margin-right:32px;}
+  .nav-links a:last-child{margin-right:0;}
+  .nav-links a{
+    font-size:14.5px;font-weight:500;color:var(--muted);text-decoration:none;
+    transition:color .15s ease;
+  }
+  .nav-links a:hover{color:var(--ink);}
+  .btn{
+    display:inline-flex;align-items:center;gap:7px;
+    font-family:inherit;font-weight:600;font-size:14.5px;
+    padding:11px 20px;border-radius:8px;text-decoration:none;
+    border:1px solid transparent;cursor:pointer;
+    transition:transform .12s ease, box-shadow .12s ease, background .12s ease;
+  }
+  .btn-primary{background:var(--primary);color:#fff;}
+  .btn-primary:hover{background:var(--primary-dark);transform:translateY(-1px);box-shadow:0 6px 16px rgba(10,102,194,.28);}
+  .btn-ghost{background:transparent;color:var(--ink);border-color:var(--border);}
+  .btn-ghost:hover{border-color:var(--primary);color:var(--primary);}
+  .btn-lg{padding:15px 28px;font-size:16px;border-radius:10px;}
+  .btn-inverse{background:#fff;color:var(--primary-dark);}
+  .btn-inverse:hover{background:#EAF2FE;transform:translateY(-1px);}
+
+  /* HERO */
+  .hero{padding:80px 0 64px;text-align:center;}
+  .hero-logo{width:96px;height:96px;border-radius:20px;margin:0 auto 28px;display:block;}
+  .eyebrow{
+    display:inline-block;font-size:12.5px;font-weight:700;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--primary);margin-bottom:18px;
+  }
+  h1{font-size:50px;font-weight:800;letter-spacing:-0.02em;line-height:1.12;}
+  h1 .line-accent{display:block;color:var(--primary);}
+  .subtitle{
+    max-width:560px;margin:18px auto 0;font-size:17px;color:var(--muted);
+  }
+  .cta-row{display:flex;justify-content:center;gap:14px;margin-top:34px;flex-wrap:wrap;}
+  .status-strip{
+    max-width:380px;margin:48px auto 12px;height:6px;border-radius:4px;
+    background:linear-gradient(90deg,var(--green),var(--yellow),var(--red));
+  }
+  .status-caption{font-size:13px;color:var(--muted);}
+
+  /* SECTIONS */
+  section{padding:72px 0;}
+  .section-soft{background:var(--bg-soft);}
+  .section-head{max-width:600px;margin:0 auto 44px;text-align:center;}
+  .section-head .eyebrow{margin-bottom:10px;}
+  h2{font-size:30px;font-weight:800;letter-spacing:-0.01em;}
+  .section-head p{color:var(--muted);font-size:15.5px;margin-top:10px;}
+
+  /* PROBLEM LIST */
+  .problem-list{max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:18px;}
+  .problem-item{
+    display:flex;gap:16px;padding:18px 0;border-bottom:1px solid var(--border);
+  }
+  .problem-item:last-child{border-bottom:none;}
+  .problem-mark{
+    flex:0 0 auto;width:34px;height:34px;border-radius:8px;
+    background:var(--bg-soft);border:1px solid var(--border);
+    display:flex;align-items:center;justify-content:center;
+    font-weight:700;font-size:13px;color:var(--primary);
+  }
+  .problem-text strong{display:block;font-size:15.5px;margin-bottom:3px;}
+  .problem-text span{font-size:14.5px;color:var(--muted);}
+
+  /* DIMENSION CARDS */
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:760px;margin:0 auto;}
+  .card{
+    background:#fff;border:1px solid var(--border);border-radius:14px;
+    padding:26px;
+  }
+  .card-icon{
+    width:42px;height:42px;border-radius:10px;background:var(--bg-soft);
+    display:flex;align-items:center;justify-content:center;margin-bottom:14px;
+  }
+  .card h3{font-size:17px;font-weight:700;margin-bottom:6px;}
+  .card p{font-size:14px;color:var(--muted);}
+
+  /* LEGEND */
+  .legend{
+    display:flex;justify-content:center;gap:36px;margin:46px auto 0;flex-wrap:wrap;
+    max-width:760px;
+  }
+  .legend-item{display:flex;align-items:center;gap:9px;font-size:14.5px;margin-right:36px;}
+  .legend-item:last-child{margin-right:0;}
+  .dot{width:11px;height:11px;border-radius:50%;flex:0 0 auto;}
+  .legend-item strong{font-weight:700;}
+  .legend-item span{color:var(--muted);}
+
+  .impl-note{
+    max-width:600px;margin:40px auto 0;text-align:center;
+    font-size:14px;color:var(--muted);padding-top:28px;border-top:1px solid var(--border);
+  }
+  .impl-note b{color:var(--ink);}
+
+  /* CTA PANEL */
+  .cta-panel{
+    background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+    border-radius:20px;padding:64px 40px;text-align:center;color:#fff;
+  }
+  .cta-panel h2{color:#fff;}
+  .cta-panel p{color:#D9E8FB;font-size:15.5px;max-width:480px;margin:12px auto 30px;}
+  .cta-panel .eyebrow{color:#BFD9FB;}
+
+  footer{padding:40px 0;text-align:center;}
+  footer p{font-size:13.5px;color:var(--muted);}
+
+  @media (max-width:720px){
+    .nav-links{display:none;}
+    h1{font-size:38px;}
+    .grid-2{grid-template-columns:1fr;}
+    .hero{padding:64px 0 44px;}
+    section{padding:56px 0;}
+    .cta-panel{padding:48px 24px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="#" class="logo"><img src="data:image/jpeg;base64,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" alt="Belajar LinkedIn"/>RiskCheck</a>
+    <div class="nav-links">
+      <a href="#tentang">Tentang</a>
+      <a href="#sistem">Sistem</a>
+      <a href="#akses">Akses</a>
+    </div>
+    <a class="btn btn-primary" href="https://docs.google.com/spreadsheets/d/1HUli-yR7pwGQ1yiKTqoJmJtK7gY1bMpp/edit?usp=sharing&ouid=115567056574796069190&rtpof=true&sd=true" target="_blank" rel="noopener noreferrer">Buka Spreadsheet ↗</a>
+  </nav>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <img class="hero-logo" src="data:image/jpeg;base64,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" alt="Belajar LinkedIn"/>
+      <span class="eyebrow">Early-Warning Risk System</span>
+      <h1>RiskCheck<span class="line-accent">Belajar LinkedIn</span></h1>
+      <p class="subtitle">Dari reaktif ke preventif: sistem deteksi risiko dini yang ringan, kolaboratif, dan dirancang untuk terus berjalan bersama pertumbuhan Belajar LinkedIn.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary btn-lg" href="https://docs.google.com/spreadsheets/d/1HUli-yR7pwGQ1yiKTqoJmJtK7gY1bMpp/edit?usp=sharing&ouid=115567056574796069190&rtpof=true&sd=true" target="_blank" rel="noopener noreferrer">Buka di Google Sheets ↗</a>
+        <a class="btn btn-ghost btn-lg" href="#sistem">Lihat Cara Kerja</a>
+      </div>
+      <div class="status-strip"></div>
+      <p class="status-caption">Hijau · Kuning · Merah, status risiko yang langsung terlihat</p>
+    </div>
+  </section>
+
+  <!-- TENTANG -->
+  <section id="tentang">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Tentang</span>
+        <h2>Saat kecepatan tumbuh, siapa yang menjaga risikonya?</h2>
+        <p>Belajar LinkedIn menjalankan banyak proses paralel: rekrutmen, event, konten, dan kemitraan. Tanpa sistem deteksi dini, masalah sering baru terlihat setelah berdampak.</p>
+      </div>
+
+      <div class="problem-list">
+        <div class="problem-item">
+          <div class="problem-mark">01</div>
+          <div class="problem-text">
+            <strong>Risiko Eksekusi</strong>
+            <span>Timeline dan tanggung jawab PIC tidak selalu terdokumentasi dengan jelas.</span>
+          </div>
+        </div>
+        <div class="problem-item">
+          <div class="problem-mark">02</div>
+          <div class="problem-text">
+            <strong>Risiko Komunikasi</strong>
+            <span>Informasi ke audiens berpotensi tidak konsisten antar platform.</span>
+          </div>
+        </div>
+        <div class="problem-item">
+          <div class="problem-mark">03</div>
+          <div class="problem-text">
+            <strong>Risiko Reputasi</strong>
+            <span>Klaim berlebihan atau konten sensitif dapat berdampak pada citra organisasi.</span>
+          </div>
+        </div>
+        <div class="problem-item">
+          <div class="problem-mark">04</div>
+          <div class="problem-text">
+            <strong>Risiko Kepatuhan</strong>
+            <span>Belum ada standar pengecekan sebelum konten/program dijalankan.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SISTEM -->
+  <section id="sistem" class="section-soft">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Sistem</span>
+        <h2>4 dimensi, dievaluasi sebelum dijalankan</h2>
+        <p>Setiap program atau konten diperiksa lewat satu checklist ringkas sebelum go-live.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-icon">⏱️</div>
+          <h3>Eksekusi</h3>
+          <p>Kejelasan timeline dan akuntabilitas PIC di setiap tahap program.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">💬</div>
+          <h3>Komunikasi</h3>
+          <p>Konsistensi informasi yang disampaikan ke seluruh platform dan audiens.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🛡️</div>
+          <h3>Reputasi</h3>
+          <p>Potensi dampak terhadap citra organisasi dari klaim atau konten yang dipublikasikan.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">✅</div>
+          <h3>Kepatuhan</h3>
+          <p>Kesesuaian terhadap SOP dan ketentuan internal yang berlaku.</p>
+        </div>
+      </div>
+
+      <div class="legend">
+        <div class="legend-item"><span class="dot" style="background:var(--green)"></span><strong>Hijau</strong><span>: aman dilanjutkan</span></div>
+        <div class="legend-item"><span class="dot" style="background:var(--yellow)"></span><strong>Kuning</strong><span>: perlu mitigasi</span></div>
+        <div class="legend-item"><span class="dot" style="background:var(--red)"></span><strong>Merah</strong><span>: wajib ditangani</span></div>
+      </div>
+
+      <p class="impl-note">Dibangun di atas <b>Google Sheets</b> agar kolaboratif dan dapat diakses lintas divisi tanpa biaya tambahan. Dirancang untuk keberlanjutan, bukan ketergantungan pada satu individu.</p>
+    </div>
+  </section>
+
+  <!-- AKSES -->
+  <section id="akses">
+    <div class="wrap">
+      <div class="cta-panel">
+        <span class="eyebrow">Akses Tools</span>
+        <h2>Mulai Gunakan RiskCheck Belajar LinkedIn</h2>
+        <p>Template checklist lengkap dengan dropdown status, conditional formatting, dan dashboard tren, siap dipakai langsung.</p>
+        <a class="btn btn-inverse btn-lg" href="https://docs.google.com/spreadsheets/d/1HUli-yR7pwGQ1yiKTqoJmJtK7gY1bMpp/edit?usp=sharing&ouid=115567056574796069190&rtpof=true&sd=true" target="_blank" rel="noopener noreferrer">Buka di Google Sheets ↗</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>RiskCheck Belajar LinkedIn bukan proyek magang yang berakhir, melainkan sistem yang terus diwariskan.</p>
+  </div>
+</footer>
+
+</body>
+</html>
